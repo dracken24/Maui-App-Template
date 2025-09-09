@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="MauiTemplate.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:MauiTemplate"
+    xmlns:pages="clr-namespace:MauiTemplate.Pages"
+    Shell.FlyoutBehavior="Disabled"
+    Title="Application Bureau"
+    Shell.TabBarBackgroundColor="#007ACC"
+    Shell.TabBarForegroundColor="White"
+    Shell.TabBarTitleColor="White"
+    Shell.TabBarUnselectedColor="#B3D9FF">
+
+    <!-- Page de connexion (page par défaut) -->
+    <ShellContent
+        Title="Connexion"
+        ContentTemplate="{DataTemplate pages:LoginPage}"
+        Route="login" />
+
+    <!-- Page d'inscription -->
+    <ShellContent
+        Title="Inscription"
+        ContentTemplate="{DataTemplate pages:RegisterPage}"
+        Route="register" />
+
+    <!-- Page principale avec navigation par onglets -->
+    <TabBar Route="main">
+        <ShellContent
+            Title="Accueil"
+            ContentTemplate="{DataTemplate pages:AccueilPage}"
+            Route="accueil" />
+        
+        <ShellContent
+            Title="Calendrier"
+            ContentTemplate="{DataTemplate pages:CalendrierPage}"
+            Route="calendrier" />
+        
+        <ShellContent
+            Title="Fonctionnalités"
+            ContentTemplate="{DataTemplate pages:FonctionnalitesPage}"
+            Route="fonctionnalites" />
+        
+        <ShellContent
+            Title="Paramètres"
+            ContentTemplate="{DataTemplate pages:ParametresPage}"
+            Route="parametres" />
+    </TabBar>
+
+    <!-- Page À propos -->
+    <ShellContent
+        Title="À propos"
+        ContentTemplate="{DataTemplate pages:AProposPage}"
+        Route="apropos" />
+
+</Shell>

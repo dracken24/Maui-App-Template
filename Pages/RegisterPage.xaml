@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="MauiTemplate.Pages.RegisterPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Title="Inscription"
+             BackgroundColor="{DynamicResource PageBackgroundColor}">
+
+    <ScrollView>
+        <Grid Padding="20" RowSpacing="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- En-tête -->
+            <Frame Grid.Row="0" 
+                   BackgroundColor="#28A745" 
+                   CornerRadius="15" 
+                   Padding="30,20" 
+                   Margin="0,20,0,0"
+                   HasShadow="True">
+                <StackLayout>
+                    <Label Text="📝" 
+                           FontSize="40" 
+                           HorizontalOptions="Center"/>
+                    <Label Text="Inscription" 
+                           FontSize="24" 
+                           FontAttributes="Bold" 
+                           TextColor="White" 
+                           HorizontalOptions="Center"/>
+                    <Label Text="Créez votre compte" 
+                           FontSize="14" 
+                           TextColor="#E0E0E0" 
+                           HorizontalOptions="Center"/>
+                </StackLayout>
+            </Frame>
+
+            <!-- Formulaire d'inscription -->
+            <Frame Grid.Row="1" 
+                   BackgroundColor="White" 
+                   CornerRadius="15" 
+                   Padding="25" 
+                   Margin="0,20,0,20"
+                   HasShadow="True">
+                <StackLayout Spacing="20">
+                    <!-- Nom d'utilisateur -->
+                    <StackLayout>
+                        <Label Text="Nom d'utilisateur *" 
+                               FontSize="14" 
+                               FontAttributes="Bold" 
+                               TextColor="#333333"/>
+                        <Entry x:Name="UsernameEntry" 
+                               Placeholder="Choisissez un nom d'utilisateur"
+                               FontSize="16"
+                               BackgroundColor="#F8F9FA"
+                               TextColor="#333333"/>
+                    </StackLayout>
+
+                    <!-- Email -->
+                    <StackLayout>
+                        <Label Text="Email *" 
+                               FontSize="14" 
+                               FontAttributes="Bold" 
+                               TextColor="#333333"/>
+                        <Entry x:Name="EmailEntry" 
+                               Placeholder="votre@email.com"
+                               Keyboard="Email"
+                               FontSize="16"
+                               BackgroundColor="#F8F9FA"
+                               TextColor="#333333"/>
+                    </StackLayout>
+
+                    <!-- Mot de passe -->
+                    <StackLayout>
+                        <Label Text="Mot de passe *" 
+                               FontSize="14" 
+                               FontAttributes="Bold" 
+                               TextColor="#333333"/>
+                        <Entry x:Name="PasswordEntry" 
+                               Placeholder="Choisissez un mot de passe"
+                               IsPassword="True"
+                               FontSize="16"
+                               BackgroundColor="#F8F9FA"
+                               TextColor="#333333"/>
+                    </StackLayout>
+
+                    <!-- Confirmation mot de passe -->
+                    <StackLayout>
+                        <Label Text="Confirmer le mot de passe *" 
+                               FontSize="14" 
+                               FontAttributes="Bold" 
+                               TextColor="#333333"/>
+                        <Entry x:Name="ConfirmPasswordEntry" 
+                               Placeholder="Confirmez votre mot de passe"
+                               IsPassword="True"
+                               FontSize="16"
+                               BackgroundColor="#F8F9FA"
+                               TextColor="#333333"/>
+                    </StackLayout>
+
+                    <!-- Nom -->
+                    <StackLayout>
+                        <Label Text="Nom" 
+                               FontSize="14" 
+                               FontAttributes="Bold" 
+                               TextColor="#333333"/>
+                        <Entry x:Name="NomEntry" 
+                               Placeholder="Votre nom (optionnel)"
+                               FontSize="16"
+                               BackgroundColor="#F8F9FA"
+                               TextColor="#333333"/>
+                    </StackLayout>
+
+                    <!-- Prénom -->
+                    <StackLayout>
+                        <Label Text="Prénom" 
+                               FontSize="14" 
+                               FontAttributes="Bold" 
+                               TextColor="#333333"/>
+                        <Entry x:Name="PrenomEntry" 
+                               Placeholder="Votre prénom (optionnel)"
+                               FontSize="16"
+                               BackgroundColor="#F8F9FA"
+                               TextColor="#333333"/>
+                    </StackLayout>
+
+                    <!-- Téléphone -->
+                    <StackLayout>
+                        <Label Text="Téléphone" 
+                               FontSize="14" 
+                               FontAttributes="Bold" 
+                               TextColor="#333333"/>
+                        <Entry x:Name="TelephoneEntry" 
+                               Placeholder="Votre numéro (optionnel)"
+                               Keyboard="Telephone"
+                               FontSize="16"
+                               BackgroundColor="#F8F9FA"
+                               TextColor="#333333"/>
+                    </StackLayout>
+
+                    <!-- Bouton d'inscription -->
+                    <Button x:Name="RegisterButton" 
+                            Text="Créer le compte" 
+                            BackgroundColor="#28A745" 
+                            TextColor="White" 
+                            FontSize="16" 
+                            FontAttributes="Bold"
+                            CornerRadius="10"
+                            HeightRequest="50"
+                            Clicked="OnRegisterClicked"/>
+
+                    <!-- Lien vers la connexion -->
+                    <StackLayout Orientation="Horizontal" 
+                                 HorizontalOptions="Center" 
+                                 Spacing="5">
+                        <Label Text="Déjà un compte ?" 
+                               FontSize="14" 
+                               TextColor="#666666"/>
+                        <Label x:Name="LoginLink" 
+                               Text="Se connecter" 
+                               FontSize="14" 
+                               TextColor="#007ACC" 
+                               FontAttributes="Bold">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnLoginTapped"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                </StackLayout>
+            </Frame>
+        </Grid>
+    </ScrollView>
+</ContentPage>

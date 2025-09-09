@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="MauiTemplate.Pages.ParametresPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Title="Paramètres"
+             BackgroundColor="{DynamicResource PageBackgroundColor}">
+
+    <ScrollView>
+        <StackLayout Padding="20" Spacing="20">
+            <!-- En-tête -->
+            <Frame BackgroundColor="#6C757D" 
+                   CornerRadius="15" 
+                   Padding="30,20" 
+                   HasShadow="True">
+                <StackLayout>
+                    <Label Text="🔧" 
+                           FontSize="40" 
+                           HorizontalOptions="Center"/>
+                    <Label Text="Paramètres" 
+                           FontSize="24" 
+                           FontAttributes="Bold" 
+                           TextColor="White" 
+                           HorizontalOptions="Center"/>
+                    <Label Text="Configurez votre application" 
+                           FontSize="14" 
+                           TextColor="#E0E0E0" 
+                           HorizontalOptions="Center"/>
+                </StackLayout>
+            </Frame>
+
+            <!-- Informations utilisateur -->
+            <Frame BackgroundColor="White" 
+                   CornerRadius="15" 
+                   Padding="25" 
+                   HasShadow="True">
+                <StackLayout>
+                    <Label Text="👤 Informations utilisateur" 
+                           FontSize="18" 
+                           FontAttributes="Bold" 
+                           TextColor="#333333"/>
+                    
+                    <StackLayout Margin="0,15,0,0" Spacing="10">
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Nom d'utilisateur:" FontSize="14" FontAttributes="Bold" TextColor="#333333" WidthRequest="120"/>
+                            <Label x:Name="UsernameLabel" FontSize="14" TextColor="#666666"/>
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Email:" FontSize="14" FontAttributes="Bold" TextColor="#333333" WidthRequest="120"/>
+                            <Label x:Name="EmailLabel" FontSize="14" TextColor="#666666"/>
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Nom:" FontSize="14" FontAttributes="Bold" TextColor="#333333" WidthRequest="120"/>
+                            <Label x:Name="NomLabel" FontSize="14" TextColor="#666666"/>
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Prénom:" FontSize="14" FontAttributes="Bold" TextColor="#333333" WidthRequest="120"/>
+                            <Label x:Name="PrenomLabel" FontSize="14" TextColor="#666666"/>
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Téléphone:" FontSize="14" FontAttributes="Bold" TextColor="#333333" WidthRequest="120"/>
+                            <Label x:Name="TelephoneLabel" FontSize="14" TextColor="#666666"/>
+                        </StackLayout>
+                    </StackLayout>
+
+                    <Button Text="✏️ Modifier le profil" 
+                            BackgroundColor="#17A2B8" 
+                            TextColor="White" 
+                            CornerRadius="10"
+                            HeightRequest="45"
+                            Margin="0,15,0,0"
+                            Clicked="OnEditProfileClicked"/>
+                </StackLayout>
+            </Frame>
+
+            <!-- Paramètres de l'application -->
+            <Frame BackgroundColor="White" 
+                   CornerRadius="15" 
+                   Padding="25" 
+                   HasShadow="True">
+                <StackLayout>
+                    <Label Text="⚙️ Paramètres de l'application" 
+                           FontSize="18" 
+                           FontAttributes="Bold" 
+                           TextColor="#333333"/>
+                    
+                    <StackLayout Margin="0,15,0,0" Spacing="15">
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Notifications" FontSize="14" TextColor="#333333" VerticalOptions="Center"/>
+                            <Switch x:Name="NotificationsSwitch" 
+                                    IsToggled="True" 
+                                    HorizontalOptions="EndAndExpand"
+                                    Toggled="OnNotificationsToggled"/>
+                        </StackLayout>
+                        
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Mode sombre" FontSize="14" TextColor="#333333" VerticalOptions="Center"/>
+                            <Switch x:Name="DarkModeSwitch" 
+                                    IsToggled="False" 
+                                    HorizontalOptions="EndAndExpand"
+                                    Toggled="OnDarkModeToggled"/>
+                        </StackLayout>
+                        
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Synchronisation automatique" FontSize="14" TextColor="#333333" VerticalOptions="Center"/>
+                            <Switch x:Name="AutoSyncSwitch" 
+                                    IsToggled="True" 
+                                    HorizontalOptions="EndAndExpand"
+                                    Toggled="OnAutoSyncToggled"/>
+                        </StackLayout>
+                    </StackLayout>
+                </StackLayout>
+            </Frame>
+
+            <!-- Actions -->
+            <Frame BackgroundColor="White" 
+                   CornerRadius="15" 
+                   Padding="25" 
+                   HasShadow="True">
+                <StackLayout>
+                    <Label Text="🔧 Actions" 
+                           FontSize="18" 
+                           FontAttributes="Bold" 
+                           TextColor="#333333"/>
+                    
+                    <Button Text="🔄 Actualiser les données" 
+                            BackgroundColor="#17A2B8" 
+                            TextColor="White" 
+                            CornerRadius="10"
+                            HeightRequest="45"
+                            Margin="0,15,0,10"
+                            Clicked="OnRefreshDataClicked"/>
+
+                    <Button Text="💾 Sauvegarder les données" 
+                            BackgroundColor="#28A745" 
+                            TextColor="White" 
+                            CornerRadius="10"
+                            HeightRequest="45"
+                            Margin="0,0,0,10"
+                            Clicked="OnBackupDataClicked"/>
+
+                    <Button Text="🗑️ Effacer le cache" 
+                            BackgroundColor="#FFC107" 
+                            TextColor="Black" 
+                            CornerRadius="10"
+                            HeightRequest="45"
+                            Margin="0,0,0,10"
+                            Clicked="OnClearCacheClicked"/>
+
+                    <Button Text="🚪 Déconnexion" 
+                            BackgroundColor="#DC3545" 
+                            TextColor="White" 
+                            CornerRadius="10"
+                            HeightRequest="45"
+                            Clicked="OnLogoutClicked"/>
+                </StackLayout>
+            </Frame>
+
+            <!-- Informations système -->
+            <Frame BackgroundColor="#E8F4FD" 
+                   CornerRadius="15" 
+                   Padding="25" 
+                   HasShadow="True">
+                <StackLayout>
+                    <Label Text="ℹ️ Informations système" 
+                           FontSize="18" 
+                           FontAttributes="Bold" 
+                           TextColor="#007ACC" 
+                           HorizontalOptions="Center"/>
+                    
+                    <StackLayout Margin="0,15,0,0" Spacing="8">
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Version:" FontSize="14" FontAttributes="Bold" TextColor="#333333" WidthRequest="100"/>
+                            <Label Text="1.0.0" FontSize="14" TextColor="#666666"/>
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Plateforme:" FontSize="14" FontAttributes="Bold" TextColor="#333333" WidthRequest="100"/>
+                            <Label x:Name="PlatformLabel" FontSize="14" TextColor="#666666"/>
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Dernière connexion:" FontSize="14" FontAttributes="Bold" TextColor="#333333" WidthRequest="100"/>
+                            <Label x:Name="LastLoginLabel" FontSize="14" TextColor="#666666"/>
+                        </StackLayout>
+                    </StackLayout>
+                </StackLayout>
+            </Frame>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

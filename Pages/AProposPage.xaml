@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="MauiTemplate.Pages.AProposPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Title="À propos"
+             BackgroundColor="{DynamicResource PageBackgroundColor}">
+
+    <ScrollView>
+        <StackLayout Padding="20" Spacing="20">
+            <!-- En-tête -->
+            <Frame BackgroundColor="#007ACC" 
+                   CornerRadius="15" 
+                   Padding="30,20" 
+                   HasShadow="True">
+                <StackLayout>
+                    <Label Text="ℹ️" 
+                           FontSize="40" 
+                           HorizontalOptions="Center"/>
+                    <Label Text="À propos" 
+                           FontSize="24" 
+                           FontAttributes="Bold" 
+                           TextColor="White" 
+                           HorizontalOptions="Center"/>
+                    <Label Text="Informations sur l'application" 
+                           FontSize="14" 
+                           TextColor="#E0E0E0" 
+                           HorizontalOptions="Center"/>
+                </StackLayout>
+            </Frame>
+
+            <!-- Description de l'application -->
+            <Frame BackgroundColor="White" 
+                   CornerRadius="15" 
+                   Padding="25" 
+                   HasShadow="True">
+                <StackLayout>
+                    <Label Text="Application Bureau Mobile" 
+                           FontSize="18" 
+                           FontAttributes="Bold" 
+                           TextColor="#333333"/>
+                    <Label Text="Cette application MAUI mobile vous permet de gérer vos rendez-vous et événements de manière intuitive et efficace. Développée avec .NET MAUI, elle offre une expérience utilisateur moderne et responsive sur tous les appareils."
+                           FontSize="14" 
+                           TextColor="#666666"
+                           LineHeight="20"/>
+                </StackLayout>
+            </Frame>
+
+            <!-- Fonctionnalités principales -->
+            <Frame BackgroundColor="#F8F9FA" 
+                   CornerRadius="15" 
+                   Padding="25" 
+                   HasShadow="True">
+                <StackLayout>
+                    <Label Text="🚀 Fonctionnalités principales" 
+                           FontSize="18" 
+                           FontAttributes="Bold" 
+                           TextColor="#333333"/>
+                    
+                    <StackLayout Margin="0,15,0,0" Spacing="10">
+                        <StackLayout Orientation="Horizontal" Spacing="10">
+                            <Label Text="✅" FontSize="16" TextColor="#28A745"/>
+                            <Label Text="Gestion des utilisateurs" FontSize="14" TextColor="#666666"/>
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal" Spacing="10">
+                            <Label Text="✅" FontSize="16" TextColor="#28A745"/>
+                            <Label Text="Calendrier interactif" FontSize="14" TextColor="#666666"/>
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal" Spacing="10">
+                            <Label Text="✅" FontSize="16" TextColor="#28A745"/>
+                            <Label Text="Gestion des rendez-vous" FontSize="14" TextColor="#666666"/>
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal" Spacing="10">
+                            <Label Text="✅" FontSize="16" TextColor="#28A745"/>
+                            <Label Text="Interface responsive" FontSize="14" TextColor="#666666"/>
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal" Spacing="10">
+                            <Label Text="✅" FontSize="16" TextColor="#28A745"/>
+                            <Label Text="Base de données SQLite" FontSize="14" TextColor="#666666"/>
+                        </StackLayout>
+                    </StackLayout>
+                </StackLayout>
+            </Frame>
+
+            <!-- Informations techniques -->
+            <Frame BackgroundColor="White" 
+                   CornerRadius="15" 
+                   Padding="25" 
+                   HasShadow="True">
+                <StackLayout>
+                    <Label Text="🔧 Informations techniques" 
+                           FontSize="18" 
+                           FontAttributes="Bold" 
+                           TextColor="#333333"/>
+                    
+                    <StackLayout Margin="0,15,0,0" Spacing="8">
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Framework:" FontSize="14" FontAttributes="Bold" TextColor="#333333" WidthRequest="120"/>
+                            <Label Text=".NET MAUI" FontSize="14" TextColor="#666666"/>
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Base de données:" FontSize="14" FontAttributes="Bold" TextColor="#333333" WidthRequest="120"/>
+                            <Label Text="SQLite" FontSize="14" TextColor="#666666"/>
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="ORM:" FontSize="14" FontAttributes="Bold" TextColor="#333333" WidthRequest="120"/>
+                            <Label Text="Entity Framework Core" FontSize="14" TextColor="#666666"/>
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Version:" FontSize="14" FontAttributes="Bold" TextColor="#333333" WidthRequest="120"/>
+                            <Label Text="1.0.0" FontSize="14" TextColor="#666666"/>
+                        </StackLayout>
+                    </StackLayout>
+                </StackLayout>
+            </Frame>
+
+            <!-- Contact -->
+            <Frame BackgroundColor="#E8F4FD" 
+                   CornerRadius="15" 
+                   Padding="25" 
+                   HasShadow="True">
+                <StackLayout>
+                    <Label Text="📞 Contact" 
+                           FontSize="18" 
+                           FontAttributes="Bold" 
+                           TextColor="#007ACC" 
+                           HorizontalOptions="Center"/>
+                    <Label Text="Pour toute question ou suggestion concernant cette application, n'hésitez pas à nous contacter."
+                           FontSize="14" 
+                           TextColor="#666666"
+                           HorizontalTextAlignment="Center"
+                           Margin="0,10,0,0"/>
+                </StackLayout>
+            </Frame>
+
+            <!-- Copyright -->
+            <Label Text="© 2024 Application Bureau Mobile. Tous droits réservés." 
+                   FontSize="12" 
+                   TextColor="#999999" 
+                   HorizontalOptions="Center" 
+                   Margin="0,20,0,0"/>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

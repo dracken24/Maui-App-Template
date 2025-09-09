@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="MauiTemplate.Pages.LoginPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Title="Connexion"
+             BackgroundColor="{DynamicResource PageBackgroundColor}">
+
+    <ScrollView>
+        <Grid Padding="20" RowSpacing="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- En-tête -->
+            <Frame Grid.Row="0" 
+                   BackgroundColor="#007ACC" 
+                   CornerRadius="15" 
+                   Padding="30,20" 
+                   Margin="0,20,0,0"
+                   HasShadow="True">
+                <StackLayout>
+                    <Label Text="🔐" 
+                           FontSize="40" 
+                           HorizontalOptions="Center"/>
+                    <Label Text="Connexion" 
+                           FontSize="24" 
+                           FontAttributes="Bold" 
+                           TextColor="White" 
+                           HorizontalOptions="Center"/>
+                    <Label Text="Connectez-vous à votre compte" 
+                           FontSize="14" 
+                           TextColor="#E0E0E0" 
+                           HorizontalOptions="Center"/>
+                </StackLayout>
+            </Frame>
+
+            <!-- Formulaire de connexion -->
+            <Frame Grid.Row="1" 
+                   BackgroundColor="White" 
+                   CornerRadius="15" 
+                   Padding="25" 
+                   Margin="0,20,0,0"
+                   HasShadow="True">
+                <StackLayout Spacing="20">
+                    <!-- Nom d'utilisateur -->
+                    <StackLayout>
+                        <Label Text="Nom d'utilisateur" 
+                               FontSize="14" 
+                               FontAttributes="Bold" 
+                               TextColor="#333333"/>
+                        <Entry x:Name="UsernameEntry" 
+                               Placeholder="Entrez votre nom d'utilisateur"
+                               FontSize="16"
+                               BackgroundColor="#F8F9FA"
+                               TextColor="#333333"/>
+                    </StackLayout>
+
+                    <!-- Mot de passe -->
+                    <StackLayout>
+                        <Label Text="Mot de passe" 
+                               FontSize="14" 
+                               FontAttributes="Bold" 
+                               TextColor="#333333"/>
+                        <Entry x:Name="PasswordEntry" 
+                               Placeholder="Entrez votre mot de passe"
+                               IsPassword="True"
+                               FontSize="16"
+                               BackgroundColor="#F8F9FA"
+                               TextColor="#333333"/>
+                    </StackLayout>
+
+                    <!-- Bouton de connexion -->
+                    <Button x:Name="LoginButton" 
+                            Text="Se connecter" 
+                            BackgroundColor="#007ACC" 
+                            TextColor="White" 
+                            FontSize="16" 
+                            FontAttributes="Bold"
+                            CornerRadius="10"
+                            HeightRequest="50"
+                            Clicked="OnLoginClicked"/>
+
+                    <!-- Lien vers l'inscription -->
+                    <StackLayout Orientation="Horizontal" 
+                                 HorizontalOptions="Center" 
+                                 Spacing="5">
+                        <Label Text="Pas encore de compte ?" 
+                               FontSize="14" 
+                               TextColor="#666666"/>
+                        <Label x:Name="RegisterLink" 
+                               Text="Créer un compte" 
+                               FontSize="14" 
+                               TextColor="#007ACC" 
+                               FontAttributes="Bold">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnRegisterTapped"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                </StackLayout>
+            </Frame>
+
+            <!-- Informations -->
+            <Frame Grid.Row="2" 
+                   BackgroundColor="#E8F4FD" 
+                   CornerRadius="15" 
+                   Padding="25" 
+                   Margin="0,20,0,20"
+                   HasShadow="True">
+                <StackLayout>
+                    <Label Text="💡 Bienvenue" 
+                           FontSize="18" 
+                           FontAttributes="Bold" 
+                           TextColor="#007ACC" 
+                           HorizontalOptions="Center"/>
+                    <Label Text="Connectez-vous pour accéder à votre espace personnel et gérer vos rendez-vous."
+                           FontSize="14" 
+                           TextColor="#333333"
+                           HorizontalOptions="Center"
+                           HorizontalTextAlignment="Center"/>
+                    <StackLayout Margin="0,15,0,0" Spacing="8">
+                        <Label Text="✅ Gérez vos rendez-vous" 
+                               FontSize="12" 
+                               TextColor="#666666"/>
+                        <Label Text="✅ Consultez votre calendrier" 
+                               FontSize="12" 
+                               TextColor="#666666"/>
+                        <Label Text="✅ Modifiez vos informations" 
+                               FontSize="12" 
+                               TextColor="#666666"/>
+                        <Label Text="✅ Accédez à vos statistiques" 
+                               FontSize="12" 
+                               TextColor="#666666"/>
+                    </StackLayout>
+                </StackLayout>
+            </Frame>
+        </Grid>
+    </ScrollView>
+</ContentPage>

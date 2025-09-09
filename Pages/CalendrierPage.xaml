@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="MauiTemplate.Pages.CalendrierPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Title="Calendrier"
+             BackgroundColor="{DynamicResource PageBackgroundColor}">
+
+    <Grid RowDefinitions="Auto,*">
+        <!-- En-tête -->
+        <Frame Grid.Row="0" 
+               BackgroundColor="#17A2B8" 
+               CornerRadius="15" 
+               Padding="25,20" 
+               Margin="20,20,20,10"
+               HasShadow="True">
+            <StackLayout>
+                <Label Text="📅" 
+                       FontSize="30" 
+                       HorizontalOptions="Center"/>
+                <Label Text="Calendrier" 
+                       FontSize="20" 
+                       FontAttributes="Bold" 
+                       TextColor="White" 
+                       HorizontalOptions="Center"/>
+                <Label Text="Gérez vos rendez-vous et événements" 
+                       FontSize="14" 
+                       TextColor="#E0E0E0" 
+                       HorizontalOptions="Center"/>
+            </StackLayout>
+        </Frame>
+
+        <!-- Contenu principal -->
+        <ScrollView Grid.Row="1" Padding="20,0,20,20">
+            <StackLayout Spacing="20">
+                <!-- Navigation du calendrier -->
+                <Frame BackgroundColor="White" 
+                       CornerRadius="15" 
+                       Padding="20" 
+                       HasShadow="True">
+                    <StackLayout>
+                        <Label Text="Navigation" 
+                               FontSize="16" 
+                               FontAttributes="Bold" 
+                               TextColor="#333333" 
+                               HorizontalOptions="Center"/>
+
+                        <Grid Margin="0,15,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Button Grid.Column="0" 
+                                    x:Name="PrevMonthButton" 
+                                    Text="◀" 
+                                    BackgroundColor="#17A2B8" 
+                                    TextColor="White" 
+                                    WidthRequest="40" 
+                                    HeightRequest="40"
+                                    CornerRadius="20"
+                                    Clicked="OnPrevMonthClicked"/>
+
+                            <Label Grid.Column="1" 
+                                   x:Name="CurrentMonthLabel" 
+                                   Text="Janvier 2024" 
+                                   FontSize="16" 
+                                   FontAttributes="Bold" 
+                                   TextColor="#333333" 
+                                   VerticalOptions="Center" 
+                                   HorizontalOptions="Center"/>
+
+                            <Button Grid.Column="2" 
+                                    x:Name="NextMonthButton" 
+                                    Text="▶" 
+                                    BackgroundColor="#17A2B8" 
+                                    TextColor="White" 
+                                    WidthRequest="40" 
+                                    HeightRequest="40"
+                                    CornerRadius="20"
+                                    Clicked="OnNextMonthClicked"/>
+                        </Grid>
+                    </StackLayout>
+                </Frame>
+
+                <!-- Calendrier simple -->
+                <Frame BackgroundColor="White" 
+                       CornerRadius="15" 
+                       Padding="15" 
+                       HasShadow="True">
+                    <StackLayout>
+                        <Label Text="Calendrier" 
+                               FontSize="16" 
+                               FontAttributes="Bold" 
+                               TextColor="#333333" 
+                               HorizontalOptions="Center"/>
+
+                        <!-- Calendrier avec grille de 42 boutons (6 semaines x 7 jours) -->
+                        <Grid x:Name="CalendarGrid" 
+                              ColumnDefinitions="*,*,*,*,*,*,*" 
+                              RowDefinitions="*,*,*,*,*,*"
+                              RowSpacing="2" 
+                              ColumnSpacing="2"
+                              Margin="0,15,0,0"
+                              HeightRequest="300">
+                            <!-- Les 42 boutons seront générés dynamiquement -->
+                        </Grid>
+                    </StackLayout>
+                </Frame>
+
+                <!-- Bouton pour ajouter un rendez-vous -->
+                <Button x:Name="AddRendezVousButton" 
+                        Text="➕ Nouveau rendez-vous" 
+                        BackgroundColor="#28A745" 
+                        TextColor="White" 
+                        FontSize="16" 
+                        FontAttributes="Bold"
+                        CornerRadius="15"
+                        HeightRequest="50"
+                        Clicked="OnAddRendezVousClicked"/>
+
+                <!-- Liste des rendez-vous du jour -->
+                <Frame BackgroundColor="White" 
+                       CornerRadius="15" 
+                       Padding="20" 
+                       HasShadow="True">
+                    <StackLayout>
+                        <Label Text="Rendez-vous du jour" 
+                               FontSize="16" 
+                               FontAttributes="Bold" 
+                               TextColor="#333333"/>
+
+                        <CollectionView x:Name="RendezVousCollectionView" 
+                                        ItemsSource="{Binding RendezVousDuJour}"
+                                        Margin="0,15,0,0">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Padding="0,5">
+                                        <Frame BackgroundColor="#F8F9FA" 
+                                               CornerRadius="10" 
+                                               Padding="15" 
+                                               HasShadow="False">
+                                            <Grid ColumnDefinitions="Auto,*,Auto">
+                                                <Label Grid.Column="0" 
+                                                       Text="{Binding DateDebut, StringFormat='{0:HH:mm}'}" 
+                                                       FontSize="14" 
+                                                       FontAttributes="Bold" 
+                                                       TextColor="#17A2B8" 
+                                                       VerticalOptions="Center"/>
+                                                <StackLayout Grid.Column="1" Margin="10,0">
+                                                    <Label Text="{Binding Titre}" 
+                                                           FontSize="14" 
+                                                           FontAttributes="Bold" 
+                                                           TextColor="#333333"/>
+                                                    <Label Text="{Binding Description}" 
+                                                           FontSize="12" 
+                                                           TextColor="#666666"/>
+                                                    <Label Text="{Binding Lieu}" 
+                                                           FontSize="12" 
+                                                           TextColor="#666666"/>
+                                                </StackLayout>
+                                                <Label Grid.Column="2" 
+                                                       Text="{Binding Statut}" 
+                                                       FontSize="12" 
+                                                       TextColor="#28A745" 
+                                                       VerticalOptions="Center"/>
+                                            </Grid>
+                                        </Frame>
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+
+                        <Label x:Name="NoRendezVousLabel" 
+                               Text="Aucun rendez-vous aujourd'hui" 
+                               FontSize="14" 
+                               TextColor="#666666" 
+                               HorizontalOptions="Center" 
+                               Margin="0,20,0,0"
+                               IsVisible="False"/>
+                    </StackLayout>
+                </Frame>
+
+                <!-- Statistiques -->
+                <Frame BackgroundColor="#E8F4FD" 
+                       CornerRadius="15" 
+                       Padding="20" 
+                       HasShadow="True">
+                    <StackLayout>
+                        <Label Text="📊 Statistiques" 
+                               FontSize="16" 
+                               FontAttributes="Bold" 
+                               TextColor="#007ACC" 
+                               HorizontalOptions="Center"/>
+                        <Label x:Name="StatsLabel" 
+                               Text="Aucun rendez-vous aujourd'hui" 
+                               FontSize="14" 
+                               TextColor="#666666" 
+                               HorizontalOptions="Center" 
+                               Margin="0,10,0,0"/>
+                    </StackLayout>
+                </Frame>
+            </StackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

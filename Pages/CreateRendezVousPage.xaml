@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="MauiTemplate.Pages.CreateRendezVousPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             Title="Nouveau Rendez-vous"
+             BackgroundColor="{DynamicResource PageBackgroundColor}">
+
+    <ScrollView>
+        <StackLayout Padding="20" Spacing="20">
+            <!-- En-tête -->
+            <Frame BackgroundColor="#28A745" 
+                   CornerRadius="15" 
+                   Padding="25,20" 
+                   HasShadow="True">
+                <StackLayout>
+                    <Label Text="➕" 
+                           FontSize="30" 
+                           HorizontalOptions="Center"/>
+                    <Label Text="Nouveau Rendez-vous" 
+                           FontSize="20" 
+                           FontAttributes="Bold" 
+                           TextColor="White" 
+                           HorizontalOptions="Center"/>
+                    <Label Text="Créez un nouveau rendez-vous" 
+                           FontSize="14" 
+                           TextColor="#E0E0E0" 
+                           HorizontalOptions="Center"/>
+                </StackLayout>
+            </Frame>
+
+            <!-- Formulaire -->
+            <Frame BackgroundColor="White" 
+                   CornerRadius="15" 
+                   Padding="25" 
+                   HasShadow="True">
+                <StackLayout Spacing="20">
+                    <!-- Titre -->
+                    <StackLayout>
+                        <Label Text="Titre *" 
+                               FontSize="14" 
+                               FontAttributes="Bold" 
+                               TextColor="#333333"/>
+                        <Entry x:Name="TitreEntry" 
+                               Placeholder="Titre du rendez-vous"
+                               FontSize="16"
+                               BackgroundColor="#F8F9FA"
+                               TextColor="#333333"/>
+                    </StackLayout>
+
+                    <!-- Description -->
+                    <StackLayout>
+                        <Label Text="Description" 
+                               FontSize="14" 
+                               FontAttributes="Bold" 
+                               TextColor="#333333"/>
+                        <Editor x:Name="DescriptionEntry" 
+                                Placeholder="Description du rendez-vous"
+                                FontSize="16"
+                                BackgroundColor="#F8F9FA"
+                                TextColor="#333333"
+                                HeightRequest="80"/>
+                    </StackLayout>
+
+                    <!-- Date de début -->
+                    <StackLayout>
+                        <Label Text="Date de début *" 
+                               FontSize="14" 
+                               FontAttributes="Bold" 
+                               TextColor="#333333"/>
+                        <DatePicker x:Name="DateDebutPicker" 
+                                    FontSize="16"
+                                    Date="{x:Static sys:DateTime.Today}"/>
+                    </StackLayout>
+
+                    <!-- Heure de début -->
+                    <StackLayout>
+                        <Label Text="Heure de début *" 
+                               FontSize="14" 
+                               FontAttributes="Bold" 
+                               TextColor="#333333"/>
+                        <TimePicker x:Name="HeureDebutPicker" 
+                                    FontSize="16"
+                                    Time="09:00:00"/>
+                    </StackLayout>
+
+                    <!-- Date de fin -->
+                    <StackLayout>
+                        <Label Text="Date de fin *" 
+                               FontSize="14" 
+                               FontAttributes="Bold" 
+                               TextColor="#333333"/>
+                        <DatePicker x:Name="DateFinPicker" 
+                                    FontSize="16"
+                                    Date="{x:Static sys:DateTime.Today}"/>
+                    </StackLayout>
+
+                    <!-- Heure de fin -->
+                    <StackLayout>
+                        <Label Text="Heure de fin *" 
+                               FontSize="14" 
+                               FontAttributes="Bold" 
+                               TextColor="#333333"/>
+                        <TimePicker x:Name="HeureFinPicker" 
+                                    FontSize="16"
+                                    Time="10:00:00"/>
+                    </StackLayout>
+
+                    <!-- Lieu -->
+                    <StackLayout>
+                        <Label Text="Lieu" 
+                               FontSize="14" 
+                               FontAttributes="Bold" 
+                               TextColor="#333333"/>
+                        <Entry x:Name="LieuEntry" 
+                               Placeholder="Lieu du rendez-vous"
+                               FontSize="16"
+                               BackgroundColor="#F8F9FA"
+                               TextColor="#333333"/>
+                    </StackLayout>
+
+                    <!-- Client -->
+                    <StackLayout>
+                        <Label Text="Client" 
+                               FontSize="14" 
+                               FontAttributes="Bold" 
+                               TextColor="#333333"/>
+                        <Entry x:Name="ClientEntry" 
+                               Placeholder="Nom du client"
+                               FontSize="16"
+                               BackgroundColor="#F8F9FA"
+                               TextColor="#333333"/>
+                    </StackLayout>
+
+                    <!-- Statut -->
+                    <StackLayout>
+                        <Label Text="Statut" 
+                               FontSize="14" 
+                               FontAttributes="Bold" 
+                               TextColor="#333333"/>
+                        <Picker x:Name="StatutPicker" 
+                                FontSize="16"
+                                BackgroundColor="#F8F9FA">
+                            <Picker.Items>
+                                <x:String>Confirmé</x:String>
+                                <x:String>En attente</x:String>
+                                <x:String>Annulé</x:String>
+                            </Picker.Items>
+                        </Picker>
+                    </StackLayout>
+
+                    <!-- Boutons -->
+                    <Grid ColumnSpacing="10" Margin="0,20,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Button Grid.Column="0" 
+                                x:Name="AnnulerButton" 
+                                Text="Annuler" 
+                                BackgroundColor="#6C757D" 
+                                TextColor="White" 
+                                CornerRadius="10"
+                                HeightRequest="50"
+                                Clicked="OnAnnulerClicked"/>
+
+                        <Button Grid.Column="1" 
+                                x:Name="CreerButton" 
+                                Text="Créer" 
+                                BackgroundColor="#28A745" 
+                                TextColor="White" 
+                                CornerRadius="10"
+                                HeightRequest="50"
+                                Clicked="OnCreerClicked"/>
+                    </Grid>
+                </StackLayout>
+            </Frame>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>
