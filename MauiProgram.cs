@@ -37,28 +37,27 @@ namespace MauiTemplate
             builder.Services.AddTransient<Pages.CreateRendezVousPage>();
 
 #if DEBUG
-    		builder.Logging.AddDebug();
+			builder.Logging.AddDebug();
 #endif
 
             var app = builder.Build();
             
-            // Initialiser la base de données de manière asynchrone
-            Task.Run(async () =>
+            // Initialiser la base de données de manière synchrone au démarrage
+            try
             {
-                try
+                var databaseService = app.Services.GetService<DatabaseService>();
+                if (databaseService != null)
                 {
-                    var databaseService = app.Services.GetService<DatabaseService>();
-                    if (databaseService != null)
-                    {
-                        await databaseService.InitializeAsync();
-                        System.Diagnostics.Debug.WriteLine("Base de données initialisée avec succès");
-                    }
+                    // Initialisation synchrone pour éviter les problèmes de timing
+                    databaseService.InitializeAsync().GetAwaiter().GetResult();
+                    System.Diagnostics.Debug.WriteLine("Base de données initialisée avec succès");
                 }
-                catch (Exception ex)
-                {
-                    System.Diagnostics.Debug.WriteLine($"Erreur d'initialisation de la base de données: {ex.Message}");
-                }
-            });
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Erreur d'initialisation de la base de données: {ex.Message}");
+                // Ne pas faire échouer l'application si la DB ne peut pas être initialisée
+            }
 
             return app;
         }

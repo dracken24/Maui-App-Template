@@ -7,10 +7,10 @@
     xmlns:pages="clr-namespace:MauiTemplate.Pages"
     Shell.FlyoutBehavior="Disabled"
     Title="Application Bureau"
-    Shell.TabBarBackgroundColor="#007ACC"
+    Shell.TabBarBackgroundColor="#006269"
     Shell.TabBarForegroundColor="White"
     Shell.TabBarTitleColor="White"
-    Shell.TabBarUnselectedColor="#B3D9FF">
+    Shell.TabBarUnselectedColor="#00EFFF">
 
     <!-- Page de connexion (page par défaut) -->
     <ShellContent

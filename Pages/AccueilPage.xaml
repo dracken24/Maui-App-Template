@@ -1,191 +1,191 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage x:Class="MauiTemplate.Pages.AccueilPage"
-             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             Title="Accueil"
-             BackgroundColor="{DynamicResource PageBackgroundColor}">
+			 xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+			 Title="Accueil"
+			 BackgroundColor="{DynamicResource PageBackgroundColor}">
 
-    <ScrollView>
-        <StackLayout Padding="20" Spacing="20">
-            <!-- En-tête -->
-            <Frame BackgroundColor="#007ACC" 
-                   CornerRadius="15" 
-                   Padding="30,20" 
-                   HasShadow="True">
-                <StackLayout>
-                    <Label Text="🏠" 
-                           FontSize="40" 
-                           HorizontalOptions="Center"/>
-                    <Label Text="Bienvenue" 
-                           FontSize="24" 
-                           FontAttributes="Bold" 
-                           TextColor="White" 
-                           HorizontalOptions="Center"/>
-                    <Label x:Name="WelcomeLabel" 
-                           Text="Application Bureau - Page d'accueil" 
-                           FontSize="14" 
-                           TextColor="#E0E0E0" 
-                           HorizontalOptions="Center"/>
-                </StackLayout>
-            </Frame>
+	<ScrollView>
+		<StackLayout Padding="20" Spacing="20">
+			<!-- En-tête -->
+			<Frame BackgroundColor="#007ACC" 
+				   CornerRadius="15" 
+				   Padding="30,20" 
+				   HasShadow="True">
+				<StackLayout>
+					<Label Text="🏠" 
+						   FontSize="40" 
+						   HorizontalOptions="Center"/>
+					<Label Text="Bienvenue" 
+						   FontSize="24" 
+						   FontAttributes="Bold" 
+						   TextColor="White" 
+						   HorizontalOptions="Center"/>
+					<Label x:Name="WelcomeLabel" 
+						   Text="Application Bureau - Page d'accueil" 
+						   FontSize="14" 
+						   TextColor="#E0E0E0" 
+						   HorizontalOptions="Center"/>
+				</StackLayout>
+			</Frame>
 
-            <!-- Section de présentation -->
-            <Frame BackgroundColor="#F8F9FA" 
-                   CornerRadius="15" 
-                   Padding="25" 
-                   HasShadow="True">
-                <StackLayout>
-                    <Label Text="À propos de cette application" 
-                           FontSize="18" 
-                           FontAttributes="Bold" 
-                           TextColor="#333333"/>
-                    <Label Text="Cette application MAUI mobile vous permet de gérer vos rendez-vous et événements de manière intuitive et efficace."
-                           FontSize="14" 
-                           TextColor="#666666"
-                           LineHeight="20"/>
-                </StackLayout>
-            </Frame>
+			<!-- Section de présentation -->
+			<Frame BackgroundColor="#F8F9FA" 
+				   CornerRadius="15" 
+				   Padding="25" 
+				   HasShadow="True">
+				<StackLayout>
+					<Label Text="À propos de cette application" 
+						   FontSize="18" 
+						   FontAttributes="Bold" 
+						   TextColor="#333333"/>
+					<Label Text="Cette application MAUI mobile vous permet de gérer vos rendez-vous et événements de manière intuitive et efficace."
+						   FontSize="14" 
+						   TextColor="#666666"
+						   LineHeight="2"/>
+				</StackLayout>
+			</Frame>
 
-            <!-- Cartes de fonctionnalités -->
-            <Label Text="Fonctionnalités principales" 
-                   FontSize="18" 
-                   FontAttributes="Bold" 
-                   TextColor="#333333"/>
+			<!-- Cartes de fonctionnalités -->
+			<!-- <Label Text="Fonctionnalités principales" 
+				   FontSize="18" 
+				   FontAttributes="Bold" 
+				   TextColor="#00B6C3"/> -->
 
-            <!-- Carte Calendrier -->
-            <Frame BackgroundColor="White" 
-                   CornerRadius="15" 
-                   Padding="25" 
-                   HasShadow="True">
-                <StackLayout>
-                    <Label Text="📅" 
-                           FontSize="40" 
-                           HorizontalOptions="Center"/>
-                    <Label Text="Calendrier" 
-                           FontSize="18" 
-                           FontAttributes="Bold" 
-                           TextColor="#333333" 
-                           HorizontalOptions="Center"/>
-                    <Label Text="Gestion complète des rendez-vous avec interface intuitive et système de couleurs pour identifier rapidement les jours avec événements."
-                           FontSize="14" 
-                           TextColor="#666666"
-                           HorizontalTextAlignment="Center"
-                           LineHeight="20"/>
-                    <Button Text="Voir le calendrier" 
-                            BackgroundColor="#17A2B8" 
-                            TextColor="White" 
-                            CornerRadius="10"
-                            Margin="0,15,0,0"
-                            Clicked="OnCalendrierClicked"/>
-                </StackLayout>
-            </Frame>
+			<!-- Carte Calendrier -->
+			<!-- <Frame BackgroundColor="White" 
+				   CornerRadius="15" 
+				   Padding="25" 
+				   HasShadow="True">
+				<StackLayout>
+					<Label Text="📅" 
+						   FontSize="40" 
+						   HorizontalOptions="Center"/>
+					<Label Text="Calendrier" 
+						   FontSize="18" 
+						   FontAttributes="Bold" 
+						   TextColor="#333333" 
+						   HorizontalOptions="Center"/>
+					<Label Text="Gestion complète des rendez-vous avec interface intuitive et système de couleurs pour identifier rapidement les jours avec événements."
+						   FontSize="14" 
+						   TextColor="#666666"
+						   HorizontalTextAlignment="Center"
+						   LineHeight="2"/>
+					<Button Text="Voir le calendrier" 
+							BackgroundColor="#17A2B8" 
+							TextColor="White" 
+							CornerRadius="10"
+							Margin="0,15,0,0"
+							Clicked="OnCalendrierClicked"/>
+				</StackLayout>
+			</Frame> -->
 
-            <!-- Carte Fonctionnalités -->
-            <Frame BackgroundColor="White" 
-                   CornerRadius="15" 
-                   Padding="25" 
-                   HasShadow="True">
-                <StackLayout>
-                    <Label Text="⚙️" 
-                           FontSize="40" 
-                           HorizontalOptions="Center"/>
-                    <Label Text="Fonctionnalités" 
-                           FontSize="18" 
-                           FontAttributes="Bold" 
-                           TextColor="#333333" 
-                           HorizontalOptions="Center"/>
-                    <Label Text="Permet de créer ou supprimer des utilisateurs. Ajouter, modifier ou supprimer des événements sur le calendrier. Les événements sont supprimés en cascade lors de la suppression d'un utilisateur."
-                           FontSize="14" 
-                           TextColor="#666666"
-                           HorizontalTextAlignment="Center"
-                           LineHeight="20"/>
-                    <Button Text="Voir les fonctionnalités" 
-                            BackgroundColor="#6C757D" 
-                            TextColor="White" 
-                            CornerRadius="10"
-                            Margin="0,15,0,0"
-                            Clicked="OnFonctionnalitesClicked"/>
-                </StackLayout>
-            </Frame>
+			<!-- Carte Fonctionnalités -->
+			<Frame BackgroundColor="White" 
+				   CornerRadius="15" 
+				   Padding="25" 
+				   HasShadow="True">
+				<StackLayout>
+					<Label Text="⚙️" 
+						   FontSize="40" 
+						   HorizontalOptions="Center"/>
+					<Label Text="Fonctionnalités" 
+						   FontSize="18" 
+						   FontAttributes="Bold" 
+						   TextColor="#333333" 
+						   HorizontalOptions="Center"/>
+					<Label Text="Permet de créer ou supprimer des utilisateurs. Ajouter, modifier ou supprimer des événements sur le calendrier. Les événements sont supprimés en cascade lors de la suppression d'un utilisateur."
+						   FontSize="14" 
+						   TextColor="#666666"
+						   HorizontalTextAlignment="Center"
+						   LineHeight="2"/>
+					<Button Text="Voir les fonctionnalités" 
+							BackgroundColor="#6C757D" 
+							TextColor="White" 
+							CornerRadius="10"
+							Margin="0,15,0,0"
+							Clicked="OnFonctionnalitesClicked"/>
+				</StackLayout>
+			</Frame>
 
-            <!-- Statistiques rapides -->
-            <Frame BackgroundColor="#E8F4FD" 
-                   CornerRadius="15" 
-                   Padding="25" 
-                   HasShadow="True">
-                <StackLayout>
-                    <Label Text="📊 Statistiques rapides" 
-                           FontSize="18" 
-                           FontAttributes="Bold" 
-                           TextColor="#007ACC" 
-                           HorizontalOptions="Center"/>
-                    <Grid Margin="0,15,0,0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
+			<!-- Statistiques rapides -->
+			<Frame BackgroundColor="#E8F4FD" 
+				   CornerRadius="15" 
+				   Padding="25" 
+				   HasShadow="True">
+				<StackLayout>
+					<Label Text="📊 Statistiques rapides" 
+						   FontSize="18" 
+						   FontAttributes="Bold" 
+						   TextColor="#007ACC" 
+						   HorizontalOptions="Center"/>
+					<Grid Margin="0,15,0,0">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="*"/>
+						</Grid.ColumnDefinitions>
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="Auto"/>
+						</Grid.RowDefinitions>
 
-                        <StackLayout Grid.Row="0" Grid.Column="0" HorizontalOptions="Center">
-                            <Label x:Name="TotalRendezVousLabel" 
-                                   Text="0" 
-                                   FontSize="24" 
-                                   FontAttributes="Bold" 
-                                   TextColor="#007ACC" 
-                                   HorizontalOptions="Center"/>
-                            <Label Text="Rendez-vous" 
-                                   FontSize="12" 
-                                   TextColor="#666666" 
-                                   HorizontalOptions="Center"/>
-                        </StackLayout>
+						<StackLayout Grid.Row="0" Grid.Column="0" HorizontalOptions="Center">
+							<Label x:Name="TotalRendezVousLabel" 
+								   Text="0" 
+								   FontSize="24" 
+								   FontAttributes="Bold" 
+								   TextColor="#007ACC" 
+								   HorizontalOptions="Center"/>
+							<Label Text="Rendez-vous" 
+								   FontSize="12" 
+								   TextColor="#666666" 
+								   HorizontalOptions="Center"/>
+						</StackLayout>
 
-                        <StackLayout Grid.Row="0" Grid.Column="1" HorizontalOptions="Center">
-                            <Label x:Name="RendezVousAujourdhuiLabel" 
-                                   Text="0" 
-                                   FontSize="24" 
-                                   FontAttributes="Bold" 
-                                   TextColor="#28A745" 
-                                   HorizontalOptions="Center"/>
-                            <Label Text="Aujourd'hui" 
-                                   FontSize="12" 
-                                   TextColor="#666666" 
-                                   HorizontalOptions="Center"/>
-                        </StackLayout>
-                    </Grid>
-                </StackLayout>
-            </Frame>
+						<StackLayout Grid.Row="0" Grid.Column="1" HorizontalOptions="Center">
+							<Label x:Name="RendezVousAujourdhuiLabel" 
+								   Text="0" 
+								   FontSize="24" 
+								   FontAttributes="Bold" 
+								   TextColor="#28A745" 
+								   HorizontalOptions="Center"/>
+							<Label Text="Aujourd'hui" 
+								   FontSize="12" 
+								   TextColor="#666666" 
+								   HorizontalOptions="Center"/>
+						</StackLayout>
+					</Grid>
+				</StackLayout>
+			</Frame>
 
-            <!-- Actions rapides -->
-            <Label Text="Actions rapides" 
-                   FontSize="18" 
-                   FontAttributes="Bold" 
-                   TextColor="#333333"/>
+			<!-- Actions rapides -->
+			<Label Text="Actions rapides" 
+				   FontSize="18" 
+				   FontAttributes="Bold" 
+				   TextColor="#00B6C3"/>
 
-            <Grid ColumnSpacing="10">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
+			<Grid ColumnSpacing="10">
+				<Grid.ColumnDefinitions>
+					<!-- <ColumnDefinition Width="*"/> -->
+					<ColumnDefinition Width="*"/>
+				</Grid.ColumnDefinitions>
 
-                <Button Grid.Column="0" 
-                        Text="➕ Nouveau RDV" 
-                        BackgroundColor="#28A745" 
-                        TextColor="White" 
-                        CornerRadius="10"
-                        HeightRequest="50"
-                        Clicked="OnNouveauRendezVousClicked"/>
+				<!-- <Button Grid.Column="0" 
+						Text="➕ Nouveau RDV" 
+						BackgroundColor="#28A745" 
+						TextColor="White" 
+						CornerRadius="10"
+						HeightRequest="50"
+						Clicked="OnNouveauRendezVousClicked"/> -->
 
-                <Button Grid.Column="1" 
-                        Text="🔧 Paramètres" 
-                        BackgroundColor="#6C757D" 
-                        TextColor="White" 
-                        CornerRadius="10"
-                        HeightRequest="50"
-                        Clicked="OnParametresClicked"/>
-            </Grid>
-        </StackLayout>
-    </ScrollView>
+				<Button Grid.Column="1" 
+						Text="🔧 Paramètres" 
+						BackgroundColor="#6C757D" 
+						TextColor="White" 
+						CornerRadius="10"
+						HeightRequest="50"
+						Clicked="OnParametresClicked"/>
+			</Grid>
+		</StackLayout>
+	</ScrollView>
 </ContentPage>

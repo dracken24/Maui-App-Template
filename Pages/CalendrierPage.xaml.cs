@@ -183,7 +183,7 @@ public partial class CalendrierPage : ContentPage
         var allRendezVous = await _databaseService.GetRendezVousByUserIdAsync(_authService.CurrentUser.Id);
         var datesWithRendezVous = allRendezVous
             .Where(r => r.DateDebut.Date >= firstDayOfMonth.Date && 
-                       r.DateDebut.Date <= lastDayOfMonth.Date)
+						r.DateDebut.Date <= lastDayOfMonth.Date)
             .Select(r => r.DateDebut.Date)
             .Distinct()
             .ToHashSet();

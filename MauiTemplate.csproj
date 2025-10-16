@@ -44,6 +44,13 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
+		
+		<!-- Configuration Android pour résoudre les problèmes de Fast Deployment -->
+		<AndroidUseSharedRuntime Condition="'$(TargetFramework)' == 'net9.0-android'">false</AndroidUseSharedRuntime>
+		<AndroidLinkMode Condition="'$(TargetFramework)' == 'net9.0-android'">None</AndroidLinkMode>
+		<AndroidCreatePackagePerAbi Condition="'$(TargetFramework)' == 'net9.0-android'">false</AndroidCreatePackagePerAbi>
+		<AndroidEnableProguard Condition="'$(TargetFramework)' == 'net9.0-android'">false</AndroidEnableProguard>
+		<AndroidUseAapt2 Condition="'$(TargetFramework)' == 'net9.0-android'">true</AndroidUseAapt2>
 	</PropertyGroup>
 
 	<ItemGroup>

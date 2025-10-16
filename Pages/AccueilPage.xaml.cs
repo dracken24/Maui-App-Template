@@ -56,20 +56,20 @@ public partial class AccueilPage : ContentPage
         }
     }
 
-    private async void OnCalendrierClicked(object sender, EventArgs e)
-    {
-        await Shell.Current.GoToAsync("calendrier");
-    }
+    // private async void OnCalendrierClicked(object sender, EventArgs e)
+    // {
+    //     await Shell.Current.GoToAsync("calendrier");
+    // }
 
     private async void OnFonctionnalitesClicked(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync("fonctionnalites");
     }
 
-    private async void OnNouveauRendezVousClicked(object sender, EventArgs e)
-    {
-        await Shell.Current.GoToAsync("calendrier");
-    }
+    // private async void OnNouveauRendezVousClicked(object sender, EventArgs e)
+    // {
+    //     await Shell.Current.GoToAsync("calendrier");
+    // }
 
     private async void OnParametresClicked(object sender, EventArgs e)
     {
