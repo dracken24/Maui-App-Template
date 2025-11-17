@@ -2,11 +2,19 @@ using MauiTemplate.Services;
 
 namespace MauiTemplate.Pages;
 
+/// <summary>
+/// Page des paramètres de l'application.
+/// Respecte le principe SRP (Single Responsibility Principle) : responsabilité unique de gestion des paramètres.
+/// Utilise l'injection de dépendances (DIP) via l'interface IAuthService.
+/// </summary>
 public partial class ParametresPage : ContentPage
 {
-    private readonly AuthService _authService;
+    private readonly IAuthService _authService;
 
-    public ParametresPage(AuthService authService)
+    /// <summary>
+    /// Constructeur avec injection de dépendances (Dependency Inversion Principle).
+    /// </summary>
+    public ParametresPage(IAuthService authService)
     {
         InitializeComponent();
         _authService = authService;

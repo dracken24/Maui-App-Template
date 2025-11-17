@@ -4,9 +4,9 @@ namespace MauiTemplate.Pages;
 
 public partial class RegisterPage : ContentPage
 {
-    private readonly AuthService _authService;
+    private readonly IAuthService _authService;
 
-    public RegisterPage(AuthService authService)
+    public RegisterPage(IAuthService authService)
     {
         InitializeComponent();
         _authService = authService;

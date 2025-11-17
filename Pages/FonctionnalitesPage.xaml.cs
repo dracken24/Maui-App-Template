@@ -1,17 +1,20 @@
 using MauiTemplate.Services;
+using MauiTemplate.Repositories;
 
 namespace MauiTemplate.Pages;
 
 public partial class FonctionnalitesPage : ContentPage
 {
-    private readonly AuthService _authService;
-    private readonly DatabaseService _databaseService;
+    private readonly IAuthService _authService;
+    private readonly IUserRepository _userRepository;
+    private readonly IRendezVousRepository _rendezVousRepository;
 
-    public FonctionnalitesPage(AuthService authService, DatabaseService databaseService)
+    public FonctionnalitesPage(IAuthService authService, IUserRepository userRepository, IRendezVousRepository rendezVousRepository)
     {
         InitializeComponent();
         _authService = authService;
-        _databaseService = databaseService;
+        _userRepository = userRepository;
+        _rendezVousRepository = rendezVousRepository;
     }
 
     protected override async void OnAppearing()
@@ -24,7 +27,7 @@ public partial class FonctionnalitesPage : ContentPage
     {
         try
         {
-            List<Models.User> users = await _databaseService.GetAllUsersAsync();
+            List<Models.User> users = await _userRepository.GetAllAsync();
             int totalEvents = users.Sum(u => u.RendezVous.Count);
 
             TotalUsersLabel.Text = users.Count.ToString();

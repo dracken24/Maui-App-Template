@@ -1,18 +1,19 @@
 using MauiTemplate.Services;
+using MauiTemplate.Repositories;
 
 namespace MauiTemplate.Pages;
 
 public partial class AccueilPage : ContentPage
 {
-    private readonly AuthService _authService;
-    private readonly DatabaseService _databaseService;
+    private readonly IAuthService _authService;
+    private readonly IRendezVousRepository _rendezVousRepository;
 
-    public AccueilPage(AuthService authService, DatabaseService databaseService)
+    public AccueilPage(IAuthService authService, IRendezVousRepository rendezVousRepository)
     {
         InitializeComponent();
 		
         _authService = authService;
-        _databaseService = databaseService;
+        _rendezVousRepository = rendezVousRepository;
     }
 
     protected override async void OnAppearing()
@@ -42,8 +43,8 @@ public partial class AccueilPage : ContentPage
         {
             try
             {
-                List<Models.RendezVous> allRendezVous = await _databaseService.GetRendezVousByUserIdAsync(_authService.CurrentUser.Id);
-                List<Models.RendezVous> todayRendezVous = await _databaseService.GetRendezVousByDateAsync(_authService.CurrentUser.Id, DateTime.Today);
+                List<Models.RendezVous> allRendezVous = await _rendezVousRepository.GetByUserIdAsync(_authService.CurrentUser.Id);
+                List<Models.RendezVous> todayRendezVous = await _rendezVousRepository.GetByUserIdAndDateAsync(_authService.CurrentUser.Id, DateTime.Today);
 
                 TotalRendezVousLabel.Text = allRendezVous.Count.ToString();
                 RendezVousAujourdhuiLabel.Text = todayRendezVous.Count.ToString();

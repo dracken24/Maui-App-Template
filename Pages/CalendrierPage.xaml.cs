@@ -1,221 +1,328 @@
 using MauiTemplate.Models;
 using MauiTemplate.Services;
+using MauiTemplate.Repositories;
 using System.Collections.ObjectModel;
+using Microsoft.Maui.ApplicationModel;
 
 namespace MauiTemplate.Pages;
 
+/// <summary>
+/// Page affichant un calendrier mensuel avec les rendez-vous.
+/// Respecte le principe SRP (Single Responsibility Principle) : responsabilité unique d'affichage du calendrier.
+/// Utilise l'injection de dépendances (DIP) via les interfaces IAuthService et IRendezVousRepository.
+/// </summary>
 public partial class CalendrierPage : ContentPage
 {
-    private readonly AuthService _authService;
-    private readonly DatabaseService _databaseService;
+    private readonly IAuthService _authService;
+    private readonly IRendezVousRepository _rendezVousRepository;
     private DateTime _currentDate = DateTime.Today;
     private DateTime _selectedDate = DateTime.Today;
     private ObservableCollection<RendezVous> _rendezVousDuJour = new();
 
     public ObservableCollection<RendezVous> RendezVousDuJour => _rendezVousDuJour;
 
-    public CalendrierPage(AuthService authService, DatabaseService databaseService)
+    /// <summary>
+    /// Constructeur avec injection de dépendances (Dependency Inversion Principle).
+    /// </summary>
+    public CalendrierPage(IAuthService authService, IRendezVousRepository rendezVousRepository)
     {
         InitializeComponent();
         _authService = authService;
-        _databaseService = databaseService;
+        _rendezVousRepository = rendezVousRepository;
         BindingContext = this;
     }
 
+    /// <summary>
+    /// Appelé lorsque la page apparaît à l'écran.
+    /// Initialise le calendrier et charge les rendez-vous du jour.
+    /// </summary>
     protected override async void OnAppearing()
     {
         base.OnAppearing();
         try
         {
+            RendezVousCollectionView.ItemsSource = _rendezVousDuJour;
             BuildCalendar();
-            UpdateCalendarDisplay();
+            await UpdateCalendarDisplay();
             await LoadRendezVousForDate(_currentDate);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            System.Diagnostics.Debug.WriteLine($"Erreur dans OnAppearing: {ex.Message}");
+            // Log silencieux en cas d'erreur (pourrait être amélioré avec un service de logging)
         }
     }
 
+    /// <summary>
+    /// Construit la grille du calendrier avec 42 cellules (6 semaines x 7 jours).
+    /// Chaque cellule est un Grid contenant un Label pour afficher le numéro du jour.
+    /// </summary>
     private void BuildCalendar()
     {
         CalendarGrid.Clear();
+        _dayLabels.Clear();
+        _dayGrids.Clear();
         
-        // Créer 42 boutons (6 semaines x 7 jours)
+        // Créer 42 cellules pour afficher un mois complet (6 semaines)
         for (int i = 0; i < 42; i++)
         {
-            var dayButton = new Button
-            {
-                Margin = new Thickness(1),
-                BackgroundColor = Colors.Transparent,
-                BorderColor = Colors.LightGray,
-                BorderWidth = 1,
-                FontSize = 12,
-                HorizontalOptions = LayoutOptions.Fill,
-                VerticalOptions = LayoutOptions.Fill
-            };
-            
-            dayButton.Clicked += DayButton_Click;
-            CalendarGrid.Add(dayButton, i % 7, i / 7);
+            var grid = CreateCalendarCell(i);
+            CalendarGrid.Add(grid, i % 7, i / 7);
         }
     }
+    
+    /// <summary>
+    /// Crée une cellule du calendrier (Grid + Label) avec un gestionnaire de tap.
+    /// </summary>
+    private Grid CreateCalendarCell(int index)
+    {
+        var grid = new Grid
+        {
+            Margin = new Thickness(1),
+            BackgroundColor = Colors.White
+        };
+        
+        var label = new Label
+        {
+            Text = "",
+            FontSize = 12,
+            HorizontalOptions = LayoutOptions.Center,
+            VerticalOptions = LayoutOptions.Center,
+            HorizontalTextAlignment = TextAlignment.Center,
+            VerticalTextAlignment = TextAlignment.Center,
+            BackgroundColor = Colors.Transparent
+        };
+        
+        grid.Add(label);
+        
+        // Ajouter un gestionnaire de tap pour sélectionner une date
+        var tapGesture = new TapGestureRecognizer();
+        tapGesture.Tapped += (s, e) => 
+        {
+            if (s is Grid g)
+                DayButton_Click(g, e);
+        };
+        grid.GestureRecognizers.Add(tapGesture);
+        
+        grid.StyleId = ""; // Sera rempli avec la date lors de la mise à jour
+        
+        // Stocker les références pour accès rapide
+        _dayLabels[index] = label;
+        _dayGrids[index] = grid;
+        
+        return grid;
+    }
+    
+    // Dictionnaires pour stocker les éléments
+    private readonly Dictionary<int, Label> _dayLabels = new();
+    private readonly Dictionary<int, Grid> _dayGrids = new();
 
-    private void UpdateCalendarDisplay()
+    /// <summary>
+    /// Met à jour l'affichage du calendrier (titre du mois et cellules).
+    /// </summary>
+    private async Task UpdateCalendarDisplay()
     {
         var culture = new System.Globalization.CultureInfo("fr-FR");
         CurrentMonthLabel.Text = _currentDate.ToString("MMMM yyyy", culture);
-        UpdateCalendarDays();
+        await UpdateCalendarDays();
     }
 
-    private async void UpdateCalendarDays()
+    /// <summary>
+    /// Met à jour les cellules du calendrier avec les dates et les rendez-vous.
+    /// Applique les couleurs selon les priorités : date sélectionnée > aujourd'hui > dates avec rendez-vous.
+    /// </summary>
+    private async Task UpdateCalendarDays()
     {
         try
         {
-            // Obtenir le premier jour du mois
             DateTime firstDayOfMonth = new DateTime(_currentDate.Year, _currentDate.Month, 1);
-            
-            // Obtenir le jour de la semaine du premier jour (0 = Dimanche, 1 = Lundi, etc.)
             int firstDayOfWeek = (int)firstDayOfMonth.DayOfWeek;
-            
-            // Obtenir le nombre de jours dans le mois
             int daysInMonth = DateTime.DaysInMonth(_currentDate.Year, _currentDate.Month);
-            
-            // Obtenir le dernier jour du mois précédent
             DateTime lastDayOfPreviousMonth = firstDayOfMonth.AddDays(-1);
             int daysInPreviousMonth = DateTime.DaysInMonth(lastDayOfPreviousMonth.Year, lastDayOfPreviousMonth.Month);
 
-            // Obtenir les dates avec des rendez-vous pour le mois actuel
             HashSet<DateTime> datesWithRendezVous = await GetDatesWithRendezVous();
-
-        // Mettre à jour chaque bouton
-        for (int i = 0; i < 42; i++)
-        {
-            Button dayButton = (Button)CalendarGrid.Children[i];
             
-            // Calculer la date correspondante
-            DateTime buttonDate;
-            if (i < firstDayOfWeek)
+            // Toutes les modifications UI doivent être faites sur le thread principal
+            await MainThread.InvokeOnMainThreadAsync(() =>
             {
-                // Jours du mois précédent
-                int day = daysInPreviousMonth - firstDayOfWeek + i + 1;
-                buttonDate = new DateTime(lastDayOfPreviousMonth.Year, lastDayOfPreviousMonth.Month, day);
-                dayButton.Text = day.ToString();
-                dayButton.TextColor = Colors.LightGray;
-                dayButton.BackgroundColor = Colors.Transparent;
-            }
-            else if (i >= firstDayOfWeek && i < firstDayOfWeek + daysInMonth)
+                for (int i = 0; i < 42; i++)
+                {
+                    if (!_dayGrids.ContainsKey(i) || !_dayLabels.ContainsKey(i))
+                    {
+                        continue;
+                    }
+                        
+                    Grid dayGrid = _dayGrids[i];
+                    Label dayLabel = _dayLabels[i];
+                    DateTime buttonDate = CalculateDateForCell(i, firstDayOfWeek, daysInMonth, daysInPreviousMonth, lastDayOfPreviousMonth);
+                    
+                    UpdateCalendarCell(dayGrid, dayLabel, buttonDate, datesWithRendezVous);
+                }
+            });
+        }
+        catch (Exception)
+        {
+            // Log silencieux en cas d'erreur (pourrait être amélioré avec un service de logging)
+        }
+    }
+    
+    /// <summary>
+    /// Calcule la date correspondant à une cellule du calendrier.
+    /// </summary>
+    private DateTime CalculateDateForCell(int index, int firstDayOfWeek, int daysInMonth, int daysInPreviousMonth, DateTime lastDayOfPreviousMonth)
+    {
+        if (index < firstDayOfWeek)
+        {
+            // Jours du mois précédent
+            int day = daysInPreviousMonth - firstDayOfWeek + index + 1;
+            return new DateTime(lastDayOfPreviousMonth.Year, lastDayOfPreviousMonth.Month, day);
+        }
+        else if (index >= firstDayOfWeek && index < firstDayOfWeek + daysInMonth)
+        {
+            // Jours du mois actuel
+            int day = index - firstDayOfWeek + 1;
+            return new DateTime(_currentDate.Year, _currentDate.Month, day);
+        }
+        else
+        {
+            // Jours du mois suivant
+            int day = index - firstDayOfWeek - daysInMonth + 1;
+            return new DateTime(_currentDate.AddMonths(1).Year, _currentDate.AddMonths(1).Month, day);
+        }
+    }
+    
+    /// <summary>
+    /// Met à jour l'affichage d'une cellule du calendrier (texte, couleurs).
+    /// </summary>
+    private void UpdateCalendarCell(Grid dayGrid, Label dayLabel, DateTime buttonDate, HashSet<DateTime> datesWithRendezVous)
+    {
+        dayGrid.StyleId = buttonDate.ToString("yyyy-MM-dd");
+        
+        // Jours du mois précédent ou suivant : affichage en gris
+        if (buttonDate.Month != _currentDate.Month)
+        {
+            dayLabel.Text = buttonDate.Day.ToString();
+            dayLabel.TextColor = Colors.LightGray;
+            dayGrid.BackgroundColor = Colors.Transparent;
+            return;
+        }
+        
+        // Jours du mois actuel
+        dayLabel.Text = buttonDate.Day.ToString();
+        DateTime normalizedDate = buttonDate.Date;
+        bool hasRendezVous = datesWithRendezVous.Contains(normalizedDate);
+        
+        // Déterminer les couleurs selon les priorités
+        var (backgroundColor, textColor) = GetCellColors(buttonDate, hasRendezVous);
+        
+        dayGrid.BackgroundColor = backgroundColor;
+        dayLabel.TextColor = textColor;
+        dayGrid.InvalidateMeasure();
+    }
+    
+    /// <summary>
+    /// Détermine les couleurs d'une cellule selon les priorités :
+    /// 1. Date sélectionnée (bleu clair)
+    /// 2. Aujourd'hui avec rendez-vous (vert) ou sans rendez-vous (jaune)
+    /// 3. Date avec rendez-vous (orange)
+    /// 4. Date normale (blanc)
+    /// </summary>
+    private (Color backgroundColor, Color textColor) GetCellColors(DateTime buttonDate, bool hasRendezVous)
+    {
+        if (buttonDate.Date == _selectedDate.Date)
+        {
+            // Date sélectionnée - priorité la plus haute
+            return (Color.FromArgb("#ADD8E6"), Colors.Black);
+        }
+        else if (buttonDate.Date == DateTime.Today.Date)
+        {
+            // Date d'aujourd'hui
+            if (hasRendezVous)
             {
-                // Jours du mois actuel
-                int day = i - firstDayOfWeek + 1;
-                buttonDate = new DateTime(_currentDate.Year, _currentDate.Month, day);
-                dayButton.Text = day.ToString();
-                
-                // Vérifier si la date a des rendez-vous
-                bool hasRendezVous = datesWithRendezVous.Contains(buttonDate.Date);
-                
-                // Mettre en surbrillance selon les priorités
-                if (buttonDate.Date == _selectedDate.Date)
-                {
-                    // Date sélectionnée - priorité la plus haute
-                    dayButton.BackgroundColor = Color.FromArgb("#ADD8E6"); // LightBlue
-                    dayButton.BorderColor = Colors.Blue;
-                    dayButton.TextColor = Colors.Black;
-                }
-                else if (buttonDate.Date == DateTime.Today.Date)
-                {
-                    // Date d'aujourd'hui
-                    if (hasRendezVous)
-                    {
-                        dayButton.BackgroundColor = Color.FromArgb("#4CAF50"); // Vert vif
-                        dayButton.BorderColor = Color.FromArgb("#2E7D32"); // Vert foncé
-                        dayButton.TextColor = Colors.White;
-                    }
-                    else
-                    {
-                        dayButton.BackgroundColor = Color.FromArgb("#FFEB3B"); // Jaune vif
-                        dayButton.BorderColor = Color.FromArgb("#F57F17"); // Jaune foncé
-                        dayButton.TextColor = Colors.Black;
-                    }
-                }
-                else if (hasRendezVous)
-                {
-                    // Date avec rendez-vous
-                    dayButton.BackgroundColor = Color.FromArgb("#FF6B35"); // Orange vif
-                    dayButton.BorderColor = Color.FromArgb("#E55A2B"); // Orange foncé
-                    dayButton.TextColor = Colors.White;
-                }
-                else
-                {
-                    // Date normale
-                    dayButton.BackgroundColor = Colors.White;
-                    dayButton.BorderColor = Colors.LightGray;
-                    dayButton.TextColor = Colors.Black;
-                }
+                return (Color.FromArgb("#4CAF50"), Colors.White); // Vert vif
             }
             else
             {
-                // Jours du mois suivant
-                int day = i - firstDayOfWeek - daysInMonth + 1;
-                buttonDate = new DateTime(_currentDate.AddMonths(1).Year, _currentDate.AddMonths(1).Month, day);
-                dayButton.Text = day.ToString();
-                dayButton.TextColor = Colors.LightGray;
-                dayButton.BackgroundColor = Colors.Transparent;
+                return (Color.FromArgb("#FFEB3B"), Colors.Black); // Jaune vif
             }
-            
-            dayButton.ClassId = buttonDate.ToString("yyyy-MM-dd"); // Stocker la date dans ClassId
         }
-        }
-        catch (Exception ex)
+        else if (hasRendezVous)
         {
-            System.Diagnostics.Debug.WriteLine($"Erreur dans UpdateCalendarDays: {ex.Message}");
+            // Date avec rendez-vous
+            return (Color.FromArgb("#FF6B35"), Colors.White); // Orange vif
+        }
+        else
+        {
+            // Date normale
+            return (Colors.White, Colors.Black);
         }
     }
 
+    /// <summary>
+    /// Récupère toutes les dates du mois actuel qui ont des rendez-vous.
+    /// </summary>
+    /// <returns>HashSet contenant les dates avec rendez-vous pour le mois affiché.</returns>
     private async Task<HashSet<DateTime>> GetDatesWithRendezVous()
     {
-        if (_authService.CurrentUser == null) return new HashSet<DateTime>();
+        if (_authService.CurrentUser == null)
+        {
+            return new HashSet<DateTime>();
+        }
 
-        // Obtenir le premier et dernier jour du mois affiché
-        var firstDayOfMonth = new DateTime(_currentDate.Year, _currentDate.Month, 1);
-        var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
-        
-        // Récupérer toutes les dates avec des rendez-vous pour ce mois
-        var allRendezVous = await _databaseService.GetRendezVousByUserIdAsync(_authService.CurrentUser.Id);
-        var datesWithRendezVous = allRendezVous
-            .Where(r => r.DateDebut.Date >= firstDayOfMonth.Date && 
-						r.DateDebut.Date <= lastDayOfMonth.Date)
-            .Select(r => r.DateDebut.Date)
-            .Distinct()
-            .ToHashSet();
+        try
+        {
+            var firstDayOfMonth = new DateTime(_currentDate.Year, _currentDate.Month, 1);
+            var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
             
-        return datesWithRendezVous;
+            var allRendezVous = await _rendezVousRepository.GetByUserIdAsync(_authService.CurrentUser.Id);
+            
+            return allRendezVous
+                .Where(r => 
+                {
+                    var dateDebut = r.DateDebut.Date;
+                    return dateDebut >= firstDayOfMonth.Date && dateDebut <= lastDayOfMonth.Date;
+                })
+                .Select(r => r.DateDebut.Date)
+                .Distinct()
+                .ToHashSet();
+        }
+        catch (Exception)
+        {
+            return new HashSet<DateTime>();
+        }
     }
 
+    /// <summary>
+    /// Gère le clic sur une cellule du calendrier.
+    /// Sélectionne la date et charge les rendez-vous correspondants.
+    /// </summary>
     private async void DayButton_Click(object sender, EventArgs e)
     {
-        if (sender is Button button && !string.IsNullOrEmpty(button.ClassId))
+        if (sender is Grid grid && !string.IsNullOrEmpty(grid.StyleId))
         {
-            if (DateTime.TryParse(button.ClassId, out DateTime date))
+            if (DateTime.TryParse(grid.StyleId, out DateTime date))
             {
                 _selectedDate = date;
-                UpdateCalendarDays();
+                await UpdateCalendarDays();
                 await LoadRendezVousForDate(date);
             }
         }
     }
 
-    private async Task LoadRendezVousDuJour()
-    {
-        await LoadRendezVousForDate(DateTime.Today);
-    }
-
+    /// <summary>
+    /// Charge les rendez-vous pour une date spécifique.
+    /// Met à jour la CollectionView et les statistiques.
+    /// </summary>
     private async Task LoadRendezVousForDate(DateTime date)
     {
-        if (_authService.CurrentUser == null) return;
+        if (_authService.CurrentUser == null)
+        {
+            return;
+        }
 
         try
         {
-            var rendezVous = await _databaseService.GetRendezVousByDateAsync(_authService.CurrentUser.Id, date);
+            var rendezVous = await _rendezVousRepository.GetByUserIdAndDateAsync(_authService.CurrentUser.Id, date);
             
             _rendezVousDuJour.Clear();
             foreach (RendezVous rdv in rendezVous)
@@ -223,19 +330,28 @@ public partial class CalendrierPage : ContentPage
                 _rendezVousDuJour.Add(rdv);
             }
 
-            // Afficher/masquer le message "Aucun rendez-vous"
-            NoRendezVousLabel.IsVisible = rendezVous.Count == 0;
-            RendezVousCollectionView.IsVisible = rendezVous.Count > 0;
+            // Forcer le rafraîchissement de la CollectionView sur le thread principal
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                NoRendezVousLabel.IsVisible = rendezVous.Count == 0;
+                RendezVousCollectionView.IsVisible = rendezVous.Count > 0;
+                
+                // Forcer le rafraîchissement en réinitialisant l'ItemsSource
+                RendezVousCollectionView.ItemsSource = null;
+                RendezVousCollectionView.ItemsSource = _rendezVousDuJour;
+            });
 
-            // Mettre à jour les statistiques
             UpdateStats(rendezVous.Count);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            System.Diagnostics.Debug.WriteLine($"Erreur lors du chargement des rendez-vous : {ex.Message}");
+            // Log silencieux en cas d'erreur (pourrait être amélioré avec un service de logging)
         }
     }
 
+    /// <summary>
+    /// Met à jour le label des statistiques avec le nombre de rendez-vous.
+    /// </summary>
     private void UpdateStats(int count)
     {
         if (count == 0)
@@ -253,20 +369,50 @@ public partial class CalendrierPage : ContentPage
     }
 
 
+    /// <summary>
+    /// Gère le clic sur le bouton "Mois précédent".
+    /// Change le mois affiché et réinitialise la sélection si nécessaire.
+    /// </summary>
     private async void OnPrevMonthClicked(object sender, EventArgs e)
     {
         _currentDate = _currentDate.AddMonths(-1);
-        UpdateCalendarDisplay();
+        
+        // Réinitialiser la date sélectionnée au premier jour du nouveau mois si elle n'est plus dans le mois
+        if (_selectedDate.Month != _currentDate.Month || _selectedDate.Year != _currentDate.Year)
+        {
+            _selectedDate = new DateTime(_currentDate.Year, _currentDate.Month, 1);
+        }
+        
+        await UpdateCalendarDisplay();
+        await LoadRendezVousForDate(_selectedDate);
     }
 
+    /// <summary>
+    /// Gère le clic sur le bouton "Mois suivant".
+    /// Change le mois affiché et réinitialise la sélection si nécessaire.
+    /// </summary>
     private async void OnNextMonthClicked(object sender, EventArgs e)
     {
         _currentDate = _currentDate.AddMonths(1);
-        UpdateCalendarDisplay();
+        
+        // Réinitialiser la date sélectionnée au premier jour du nouveau mois si elle n'est plus dans le mois
+        if (_selectedDate.Month != _currentDate.Month || _selectedDate.Year != _currentDate.Year)
+        {
+            _selectedDate = new DateTime(_currentDate.Year, _currentDate.Month, 1);
+        }
+        
+        await UpdateCalendarDisplay();
+        await LoadRendezVousForDate(_selectedDate);
     }
 
+    /// <summary>
+    /// Gère le clic sur le bouton "Ajouter un rendez-vous".
+    /// Passe la date sélectionnée à la page de création et navigue vers celle-ci.
+    /// </summary>
     private async void OnAddRendezVousClicked(object sender, EventArgs e)
     {
+        CreateRendezVousPage.SelectedDate = _selectedDate;
         await Shell.Current.GoToAsync("createRendezVous");
     }
 }
+

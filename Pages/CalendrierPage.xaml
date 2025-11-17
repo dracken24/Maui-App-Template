@@ -131,7 +131,6 @@
                                TextColor="#333333"/>
 
                         <CollectionView x:Name="RendezVousCollectionView" 
-                                        ItemsSource="{Binding RendezVousDuJour}"
                                         Margin="0,15,0,0">
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>

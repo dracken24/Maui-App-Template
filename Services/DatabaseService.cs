@@ -65,9 +65,14 @@ namespace MauiTemplate.Services
 
         public async Task<List<RendezVous>> GetRendezVousByDateAsync(int userId, DateTime date)
         {
+            // Normaliser la date (enlever l'heure)
+            var dateStart = date.Date;
+            var dateEnd = dateStart.AddDays(1).AddTicks(-1);
+            
             return await _context.RendezVous
                 .Where(r => r.UserId == userId && 
-                            r.DateDebut.Date == date.Date)
+                            r.DateDebut >= dateStart && 
+                            r.DateDebut < dateEnd)
                 .OrderBy(r => r.DateDebut)
                 .ToListAsync();
         }
