@@ -24,8 +24,8 @@ public partial class FonctionnalitesPage : ContentPage
     {
         try
         {
-            var users = await _databaseService.GetAllUsersAsync();
-            var totalEvents = users.Sum(u => u.RendezVous.Count);
+            List<Models.User> users = await _databaseService.GetAllUsersAsync();
+            int totalEvents = users.Sum(u => u.RendezVous.Count);
 
             TotalUsersLabel.Text = users.Count.ToString();
             TotalEventsLabel.Text = totalEvents.ToString();
@@ -59,7 +59,7 @@ public partial class FonctionnalitesPage : ContentPage
 
     private async void OnCleanDatabaseClicked(object sender, EventArgs e)
     {
-        var result = await DisplayAlert("Confirmation", 
+        bool result = await DisplayAlert("Confirmation", 
             "Êtes-vous sûr de vouloir nettoyer la base de données ? Cette action est irréversible.", 
             "Oui", "Non");
 

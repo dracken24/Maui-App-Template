@@ -10,6 +10,7 @@ public partial class AccueilPage : ContentPage
     public AccueilPage(AuthService authService, DatabaseService databaseService)
     {
         InitializeComponent();
+		
         _authService = authService;
         _databaseService = databaseService;
     }
@@ -25,8 +26,8 @@ public partial class AccueilPage : ContentPage
     {
         if (_authService.CurrentUser != null)
         {
-            var user = _authService.CurrentUser;
-            var displayName = !string.IsNullOrEmpty(user.Prenom) && !string.IsNullOrEmpty(user.Nom) 
+            Models.User? user = _authService.CurrentUser;
+            string displayName = !string.IsNullOrEmpty(user.Prenom) && !string.IsNullOrEmpty(user.Nom) 
                 ? $"{user.Prenom} {user.Nom}" 
                 : user.Username;
             
@@ -41,8 +42,8 @@ public partial class AccueilPage : ContentPage
         {
             try
             {
-                var allRendezVous = await _databaseService.GetRendezVousByUserIdAsync(_authService.CurrentUser.Id);
-                var todayRendezVous = await _databaseService.GetRendezVousByDateAsync(_authService.CurrentUser.Id, DateTime.Today);
+                List<Models.RendezVous> allRendezVous = await _databaseService.GetRendezVousByUserIdAsync(_authService.CurrentUser.Id);
+                List<Models.RendezVous> todayRendezVous = await _databaseService.GetRendezVousByDateAsync(_authService.CurrentUser.Id, DateTime.Today);
 
                 TotalRendezVousLabel.Text = allRendezVous.Count.ToString();
                 RendezVousAujourdhuiLabel.Text = todayRendezVous.Count.ToString();

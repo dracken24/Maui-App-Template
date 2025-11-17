@@ -36,8 +36,8 @@ public partial class CreateRendezVousPage : ContentPage
         try
         {
             // Créer les dates avec validation
-            var dateDebut = DateDebutPicker.Date.Date.Add(HeureDebutPicker.Time);
-            var dateFin = DateFinPicker.Date.Date.Add(HeureFinPicker.Time);
+            DateTime dateDebut = DateDebutPicker.Date.Date.Add(HeureDebutPicker.Time);
+            DateTime dateFin = DateFinPicker.Date.Date.Add(HeureFinPicker.Time);
 
             // Vérifier que la date de fin est après la date de début
             if (dateFin <= dateDebut)
@@ -54,7 +54,7 @@ public partial class CreateRendezVousPage : ContentPage
             }
 
             // Créer le rendez-vous
-            var rendezVous = new RendezVous
+            RendezVous rendezVous = new RendezVous
             {
                 Titre = TitreEntry.Text.Trim(),
                 Description = DescriptionEntry.Text?.Trim(),

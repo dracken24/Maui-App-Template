@@ -72,7 +72,7 @@ public partial class CalendrierPage : ContentPage
         try
         {
             // Obtenir le premier jour du mois
-            var firstDayOfMonth = new DateTime(_currentDate.Year, _currentDate.Month, 1);
+            DateTime firstDayOfMonth = new DateTime(_currentDate.Year, _currentDate.Month, 1);
             
             // Obtenir le jour de la semaine du premier jour (0 = Dimanche, 1 = Lundi, etc.)
             int firstDayOfWeek = (int)firstDayOfMonth.DayOfWeek;
@@ -81,16 +81,16 @@ public partial class CalendrierPage : ContentPage
             int daysInMonth = DateTime.DaysInMonth(_currentDate.Year, _currentDate.Month);
             
             // Obtenir le dernier jour du mois précédent
-            var lastDayOfPreviousMonth = firstDayOfMonth.AddDays(-1);
+            DateTime lastDayOfPreviousMonth = firstDayOfMonth.AddDays(-1);
             int daysInPreviousMonth = DateTime.DaysInMonth(lastDayOfPreviousMonth.Year, lastDayOfPreviousMonth.Month);
 
             // Obtenir les dates avec des rendez-vous pour le mois actuel
-            var datesWithRendezVous = await GetDatesWithRendezVous();
+            HashSet<DateTime> datesWithRendezVous = await GetDatesWithRendezVous();
 
         // Mettre à jour chaque bouton
         for (int i = 0; i < 42; i++)
         {
-            var dayButton = (Button)CalendarGrid.Children[i];
+            Button dayButton = (Button)CalendarGrid.Children[i];
             
             // Calculer la date correspondante
             DateTime buttonDate;
@@ -218,7 +218,7 @@ public partial class CalendrierPage : ContentPage
             var rendezVous = await _databaseService.GetRendezVousByDateAsync(_authService.CurrentUser.Id, date);
             
             _rendezVousDuJour.Clear();
-            foreach (var rdv in rendezVous)
+            foreach (RendezVous rdv in rendezVous)
             {
                 _rendezVousDuJour.Add(rdv);
             }

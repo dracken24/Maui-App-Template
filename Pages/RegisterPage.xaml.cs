@@ -50,7 +50,7 @@ public partial class RegisterPage : ContentPage
 
         try
         {
-            var success = await _authService.RegisterAsync(
+            bool success = await _authService.RegisterAsync(
                 UsernameEntry.Text,
                 EmailEntry.Text,
                 PasswordEntry.Text,
@@ -89,7 +89,7 @@ public partial class RegisterPage : ContentPage
     {
         try
         {
-            var addr = new System.Net.Mail.MailAddress(email);
+            System.Net.Mail.MailAddress addr = new System.Net.Mail.MailAddress(email);
             return addr.Address == email;
         }
         catch

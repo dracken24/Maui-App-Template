@@ -23,7 +23,7 @@ public partial class ParametresPage : ContentPage
     {
         if (_authService.CurrentUser != null)
         {
-            var user = _authService.CurrentUser;
+            Models.User user = _authService.CurrentUser;
             UsernameLabel.Text = user.Username;
             EmailLabel.Text = user.Email;
             NomLabel.Text = user.Nom ?? "Non renseigné";
@@ -70,7 +70,7 @@ public partial class ParametresPage : ContentPage
 
     private async void OnClearCacheClicked(object sender, EventArgs e)
     {
-        var result = await DisplayAlert("Confirmation", 
+        bool result = await DisplayAlert("Confirmation", 
             "Êtes-vous sûr de vouloir effacer le cache ?", 
             "Oui", "Non");
 
@@ -82,7 +82,7 @@ public partial class ParametresPage : ContentPage
 
     private async void OnLogoutClicked(object sender, EventArgs e)
     {
-        var result = await DisplayAlert("Confirmation", 
+        bool result = await DisplayAlert("Confirmation", 
             "Êtes-vous sûr de vouloir vous déconnecter ?", 
             "Oui", "Non");
 

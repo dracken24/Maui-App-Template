@@ -16,7 +16,7 @@ namespace MauiTemplate.Data
         {
             if (!optionsBuilder.IsConfigured)
             {
-                var dbPath = Path.Combine(FileSystem.AppDataDirectory, "ApplicationBureau.db");
+                string dbPath = Path.Combine(FileSystem.AppDataDirectory, "ApplicationBureau.db");
                 optionsBuilder.UseSqlite($"Data Source={dbPath}");
             }
         }
@@ -57,9 +57,9 @@ namespace MauiTemplate.Data
                 
                 // Relation avec User (cascade delete)
                 entity.HasOne(e => e.User)
-                      .WithMany(u => u.RendezVous)
-                      .HasForeignKey(e => e.UserId)
-                      .OnDelete(DeleteBehavior.Cascade);
+                    .WithMany(u => u.RendezVous)
+                    .HasForeignKey(e => e.UserId)
+                    .OnDelete(DeleteBehavior.Cascade);
             });
         }
     }

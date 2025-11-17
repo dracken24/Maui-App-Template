@@ -46,7 +46,7 @@ namespace MauiTemplate.Services
 
         public async Task DeleteUserAsync(int userId)
         {
-            var user = await _context.Users.FindAsync(userId);
+            Models.User? user = await _context.Users.FindAsync(userId);
             if (user != null)
             {
                 _context.Users.Remove(user);
@@ -67,7 +67,7 @@ namespace MauiTemplate.Services
         {
             return await _context.RendezVous
                 .Where(r => r.UserId == userId && 
-                           r.DateDebut.Date == date.Date)
+                            r.DateDebut.Date == date.Date)
                 .OrderBy(r => r.DateDebut)
                 .ToListAsync();
         }
@@ -87,7 +87,7 @@ namespace MauiTemplate.Services
 
         public async Task DeleteRendezVousAsync(int rendezVousId)
         {
-            var rendezVous = await _context.RendezVous.FindAsync(rendezVousId);
+            Models.RendezVous? rendezVous = await _context.RendezVous.FindAsync(rendezVousId);
             if (rendezVous != null)
             {
                 _context.RendezVous.Remove(rendezVous);

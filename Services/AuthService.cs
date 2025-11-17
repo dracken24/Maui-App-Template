@@ -20,7 +20,7 @@ namespace MauiTemplate.Services
 
         public async Task<bool> LoginAsync(string username, string password)
         {
-            var user = await _databaseService.GetUserByUsernameAsync(username);
+            Models.User? user = await _databaseService.GetUserByUsernameAsync(username);
             if (user != null && VerifyPassword(password, user.Password))
             {
                 _currentUser = user;
@@ -34,16 +34,16 @@ namespace MauiTemplate.Services
         public async Task<bool> RegisterAsync(string username, string email, string password, string? nom = null, string? prenom = null, string? telephone = null)
         {
             // Vérifier si l'utilisateur existe déjà
-            var existingUser = await _databaseService.GetUserByUsernameAsync(username);
+            Models.User? existingUser = await _databaseService.GetUserByUsernameAsync(username);
             if (existingUser != null)
                 return false;
 
-            var existingEmail = await _databaseService.GetUserByEmailAsync(email);
+            Models.User? existingEmail = await _databaseService.GetUserByEmailAsync(email);
             if (existingEmail != null)
                 return false;
 
             // Créer le nouvel utilisateur
-            var user = new User
+            Models.User user = new Models.User
             {
                 Username = username,
                 Email = email,
@@ -74,16 +74,16 @@ namespace MauiTemplate.Services
 
         private string HashPassword(string password)
         {
-            using (var sha256 = SHA256.Create())
+            using (SHA256 sha256 = SHA256.Create())
             {
-                var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+                byte[] hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
                 return Convert.ToBase64String(hashedBytes);
             }
         }
 
         private bool VerifyPassword(string password, string hashedPassword)
         {
-            var hashedInput = HashPassword(password);
+            string hashedInput = HashPassword(password);
             return hashedInput == hashedPassword;
         }
     }
